@@ -61,7 +61,7 @@ class AttributeMatcher(object):
         if values:
             self.values = values
 
-class Datasource:
+class Datasource(object):
     """Creates a Datasource Object
 
     Args: 
@@ -84,7 +84,7 @@ class Datasource:
         if local_data:
             self.localData = local_data
 
-class Subject:
+class Subject(object):
     """Creates a Subject Object
 
     Args: 
@@ -284,18 +284,19 @@ class PercentilesField(Field):
         `label`: (Optional) accepts a String value.     
     """
 
-    def __init__(self, name, field, subjects, percentile_count, inverse, label=None):
+    def __init__(self, field, percentile_count, inverse, normalization_subjects=None, name=None, label=None):
         is_of_type(Field, field, 'field should be of type Field')
-        is_list_object(subjects)
-        all_same_type(Subject, subjects, 'subjects should be of type Subject')
         is_of_type(int, percentile_count)
         is_of_type(bool, inverse)
 
         super().__init__(field_class=package_name_transformation + 'PercentilesField', label=label)
-        self.valueField = field
-        self.normalizationSubjects = subjects
         self.percentileCount = percentile_count
         self.inverse = inverse
+        self.valueField = field
+        if normalization_subjects is not None:
+            is_list_object(normalization_subjects)
+            all_same_type(Subject, normalization_subjects, 'subjects should be of type Subject')
+            self.normalizationSubjects = normalization_subjects
 
 
 """
