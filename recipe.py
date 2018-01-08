@@ -22,15 +22,13 @@ class Recipe(object):
         self.exporter = exporter
         self.timeStamp = timestamp
 
-    
-    """Builds the recipe from the class object
-
-    Args: 
-        `output_location`: (Optional) If you would like to save the recipe file, pass the location.    
-        `console_print`: (Optional) To print the recipe on console.    
-    """
-
     def build_recipe(self, output_location=None, console_print=False):
+        """Builds the recipe from the class object
+
+        Args: 
+            `output_location`: (Optional) If you would like to save the recipe file, pass the location.    
+            `console_print`: (Optional) To print the recipe on console.    
+        """
         self.recipe = json.dumps(self, indent=2, default=lambda a: a.__dict__)
         if output_location is not None:
             with open(base_dir + '/' + output_location, 'w') as recipe_file:
@@ -38,15 +36,15 @@ class Recipe(object):
         if console_print:
             print(self.recipe)
 
-    """Runs the recipe directly from Python console
-
-    Args: 
-        `tombolo_path`: Path of the tombolo project.  
-        `output_path`: Path of the file where you want the output to be saved.  
-        `force_imports`: (Optional) If you would like to import the datasource for the importer again.    
-        `clear_database_cache`: (Optional) To clear the database.    
-    """
     def run_recipe(self, tombolo_path, output_path, force_imports=None, clear_database_cache=False):
+        """Runs the recipe directly from Python console
+
+        Args: 
+            `tombolo_path`: Path of the tombolo project.  
+            `output_path`: Path of the file where you want the output to be saved.  
+            `force_imports`: (Optional) If you would like to import the datasource for the importer again.    
+            `clear_database_cache`: (Optional) To clear the database.    
+        """
         args = ["gradle", "runExport", 
                 "-PdataExportSpec=" + self.recipe, "-PoutputFile=" + base_dir + '/' + output_path]
         if force_imports is not None:
