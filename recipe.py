@@ -20,11 +20,12 @@ class Recipe(object):
         self.exporter = exporter
         self.timeStamp = timestamp
 
-    def build_recipe(self, output_location):
+    def build_recipe(self, output_location, show=False):
         recipe = json.dumps(self, indent=2, default=lambda a: a.__dict__)
         with open(base_dir + '/' + output_location, 'w') as recipe_file:
             recipe_file.write(recipe)
-        print(recipe)
+        if show==True:
+            print(recipe)
 
 class Dataset(object):
     """Creates a Dataset Object
