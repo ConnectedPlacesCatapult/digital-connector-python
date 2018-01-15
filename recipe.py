@@ -47,7 +47,7 @@ class Recipe(object):
             `gradle_path`: (Optional) If gradle path is not set in env variables, use this option to pass gradle path.
         """
 
-        gradle = gradle_path + '/' if gradle_path is not None else ''
+        gradle = gradle_path + '/bin/' if gradle_path is not None else ''
         gradle_command = gradle + 'gradle'
         args = [gradle_command, "runExport", 
                 "-PdataExportSpec=" + self.recipe, "-PoutputFile=" + base_dir + '/' + output_path]
