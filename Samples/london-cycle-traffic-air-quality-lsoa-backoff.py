@@ -1,3 +1,8 @@
+from os import path, pardir
+import sys
+sys.path.append(path.join(path.dirname(path.realpath(__file__)), pardir))
+
+
 from recipe import Recipe, Dataset, Subject, Match_Rule, Geo_Match_Rule, Datasource, BackOffField, SingleValueModellingField, MapToContainingSubjectField
 
 match_rule = Match_Rule(attribute_to_match_on='label', pattern='E090%')
@@ -28,4 +33,5 @@ dataset = Dataset(subjects=[main_subject], datasources=[m_datasource_1, m_dataso
                 fields=[back_off_field, back_off_field_2])
 recipe = Recipe(dataset=dataset)
 recipe.build_recipe(output_location='Desktop/london-cycle-traffic-air-quality-lsoa-backoff.json')
+recipe.run_recipe(tombolo_path='Desktop/UptodateProject/TomboloDigitalConnector', output_path='Desktop/london-cycle-traffic-air-quality-lsoa-backoff.geojson')
                 

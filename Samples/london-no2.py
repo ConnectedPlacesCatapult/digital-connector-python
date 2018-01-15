@@ -1,3 +1,7 @@
+from os import path, pardir
+import sys
+sys.path.append(path.join(path.dirname(path.realpath(__file__)), pardir))
+
 from recipe import Recipe, Field, Datasource, AttributeMatcher, Subject, Match_Rule, LatestValueField, Dataset
 
 subjects = Subject(subject_type_label='airQualityControl', provider_label='erg.kcl.ac.uk')
@@ -9,3 +13,4 @@ lvf = LatestValueField(attribute_matcher=attribute_matcher, label='Anual NO2')
 dataset = Dataset(subjects=[subjects], datasources=[datasources], fields=[lvf])
 recipe = Recipe(dataset=dataset)
 recipe.build_recipe(output_location='Desktop/london-no2.json')
+recipe.run_recipe(tombolo_path='Desktop/UptodateProject/TomboloDigitalConnector', output_path='Desktop/london-no2.geojson')
