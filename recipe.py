@@ -36,7 +36,7 @@ class Recipe(object):
         if console_print:
             print(self.recipe)
 
-    def run_recipe(self, tombolo_path, output_path, force_imports=None, clear_database_cache=False):
+    def run_recipe(self, tombolo_path, output_path, force_imports=None, clear_database_cache=False, gradle_path=None):
         """Runs the recipe directly from Python console
 
         Args: 
@@ -44,8 +44,12 @@ class Recipe(object):
             `output_path`: Path of the file where you want the output to be saved.  
             `force_imports`: (Optional) If you would like to import the datasource for the importer again.    
             `clear_database_cache`: (Optional) To clear the database.    
+            `gradle_path`: (Optional) If gradle path is not set in env variables, use this option to pass gradle path.
         """
-        args = ["gradle", "runExport", 
+
+        gradle = gradle_path + '/' if gradle_path is not None else ''
+        gradle_command = gradle + 'gradle'
+        args = [gradle_command, "runExport", 
                 "-PdataExportSpec=" + self.recipe, "-PoutputFile=" + base_dir + '/' + output_path]
         if force_imports is not None:
             args.append("-PforceImports=" + force_imports)
