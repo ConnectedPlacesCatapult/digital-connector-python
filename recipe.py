@@ -51,6 +51,8 @@ class Recipe(object):
         gradle_command = gradle + 'gradle'
         args = [gradle_command, "runExport", 
                 "-PdataExportSpec=" + self.recipe, "-PoutputFile=" + base_dir + '/' + output_path]
+        # args = [gradle_command, "runExport", "-Ps",
+        # "-Precipe=" + self.recipe, "-Poutput=" + base_dir + '/' + output_path]
         if force_imports is not None:
             args.append("-PforceImports=" + force_imports)
         if clear_database_cache:
