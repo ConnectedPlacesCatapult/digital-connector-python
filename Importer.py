@@ -110,6 +110,7 @@ class AbstractImporter(object):
         global gateway
         self._tombolo_path = tombolo_path
         self._print_data = print_data
+        self._data = None
         self.start_server()
         gateway = self.gateway_obj()
 
@@ -117,9 +118,10 @@ class AbstractImporter(object):
         implements = ["uk.org.tombolo.Py4jServerInterface"]
 
     def streamData(self, data):
+        self._data = data
         if self._print_data:
             print(data)
-        return data
+        return self._data
 
     def start_server(self):
         global server_started
@@ -143,9 +145,8 @@ class AbstractImporter(object):
         return gateway
 
     def download_data(self, url, data_cache_directory='/tmp', prefix='', suffix=''):
-        importer = AbstractImporter(self._tombolo_path, print_data=True)
-        gateway = self.gateway_obj_with_callback(python_entry=importer)
-        gateway.entry_point.downloadData(url, data_cache_directory, prefix, suffix)
+        gateway = self.gateway_obj_with_callback(python_entry=self)
+        data = gateway.entry_point.downloadData(url, data_cache_directory, prefix, suffix)
         gateway.shutdown()
     
     def save_provider(self, provider):
