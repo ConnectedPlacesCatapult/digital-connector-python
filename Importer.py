@@ -56,7 +56,7 @@ class Subject(object):
     def to_java_subject(self):
         global gateway
         return gateway.jvm.uk.org.tombolo.core.Subject(self._subject_type.to_java_subject_type(),
-            self._label, self._name, self._shape)
+            self._label, self._name, self._shape.to_java_geometry())
 
 class Geometry(object):
     def __init__(self, latitude, longitude):
@@ -88,7 +88,8 @@ class TimedValue(object):
     def to_java_timed_value(self):
         global gateway
         return gateway.jvm.uk.org.tombolo.core.TimedValue(self._subject.to_java_subject(),
-            self._attribute.to_java_attribute(), self._timestamp, self._value)
+            self._attribute.to_java_attribute(), gateway.jvm.uk.org.tombolo.core.utils.TimedValueUtils.parseTimestampString(self._timestamp), 
+            gateway.jvm.java.lang.Double.parseDouble(self._value))
 
 class FixedValue(object):
     def __init__(self, subject, attribute, value):
@@ -145,9 +146,10 @@ class AbstractImporter(object):
         return gateway
 
     def download_data(self, url, data_cache_directory='/tmp', prefix='', suffix=''):
-        gateway = self.gateway_obj_with_callback(python_entry=self)
-        data = gateway.entry_point.downloadData(url, data_cache_directory, prefix, suffix)
-        gateway.shutdown()
+        global gateway
+        _gateway = self.gateway_obj_with_callback(python_entry=self)
+        data = _gateway.entry_point.downloadData(url, data_cache_directory, prefix, suffix)
+        _gateway.close()
     
     def save_provider(self, provider):
         global gateway
@@ -210,7 +212,7 @@ class AbstractImporter(object):
         global gateway
         self.start_server()
 
-        params = [attributes, subject_types, subjects, provider, fixed_values, timed_values]
+        params = [provider, attributes, subject_types, subjects, fixed_values, timed_values]
         func = {'Provider': self.save_provider, 'Attribute': self.save_attribute, 
                 'SubjectType': self.save_subject_types, 'Subject': self.save_subjects, 
                 'FixedValue': self.save_fixed_values, 'TimedValue': self.save_timed_values}
@@ -227,15 +229,6 @@ class AbstractImporter(object):
 
         database.shutdown()
         gateway.shutdown()
-
-
-    """
-    This is a test method and needs to be removed later
-    """
-    # def test(self):
-        # self.download_data(url='http://api.erg.kcl.ac.uk/AirQuality/Annual/MonitoringObjective/GroupName=London/Year=2010/json', 
-        #                     data_cache_directory=home_dir + '/Desktop', prefix='', suffix='.json')
-
 
 
 class RunPy4jServer(threading.Thread):
@@ -261,25 +254,5 @@ class RunPy4jServer(threading.Thread):
                 dirs.append(os.path.join(directory_path, file_name))
         return dirs
 
-
-
-
-
-"""
-This is also a test section and needs to be removed later
-"""
-# tombolo_path = '/Desktop/UptodateProject/TomboloDigitalConnector/'
-# importer = AbstractImporter(tombolo_path)
-# # # importer.test()
-# # # importer.save_provider(Provider(label='test label', name='test name'))
-# geo = Geometry(latitude='51.524086', longitude='-0.104831')
-# p = Provider(label='test3', name='test3')
-# attr = Attribute(provider=p, label='attribute_test', description='this is a test')
-# sub_type = SubjectType(provider=p, label='something', name='thisname')
-# subject = Subject(subject_type=sub_type, label='sublable', name='subname', shape=geo.to_java_geometry())
-# # importer.save(subjects=[subject], provider=p, subject_types=[sub_type], attributes=[attr])
-# importer.save(subjects=[subject])
-# importer.save(provider=Provider(label='test3', name='test3'))
-# importer.save(attributes=[Attribute(provider=p, label='attribute_test', description='this is a test')])
 
 
