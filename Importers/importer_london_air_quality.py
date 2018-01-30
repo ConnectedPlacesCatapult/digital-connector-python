@@ -12,7 +12,6 @@ data_url = 'http://api.erg.kcl.ac.uk/AirQuality/Annual/MonitoringObjective/Group
 
 from Utils import Utils
 data = Utils.download_data(data_url=data_url, suffix='json')
-# print(test_data)
 
 from Importer import Provider, SubjectType, AbstractImporter, home_dir, Attribute, Subject, Geometry, FixedValue, TimedValue
 importer = AbstractImporter(tombolo_path='/Desktop/UptodateProject/TomboloDigitalConnector/')
@@ -24,8 +23,6 @@ provider = Provider(label='erg.kcl.ac.uk', name='Environmental Research Group Ki
 subject_type = SubjectType(provider=provider, label='erg.kcl.ac.uk', name='airQualityControl')
 
 # Getting data
-# importer.download_data(url=data_url, data_cache_directory='/tmp', prefix='', suffix='.json')
-# fetch_data = importer._data
 to_dataframe = convert_to_dataframe.convert(data=data)
 data = pd.DataFrame(data=to_dataframe)
 

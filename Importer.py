@@ -139,11 +139,6 @@ class AbstractImporter(object):
     def gateway_obj(self):
         gateway = JavaGateway()
         return gateway
-
-    # def gateway_obj_with_callback(self, python_entry):
-    #     gateway = JavaGateway(callback_server_parameters=CallbackServerParameters(), 
-    #                                 python_server_entry_point=python_entry)
-    #     return gateway
     
     def save_provider(self, provider):
         global gateway
