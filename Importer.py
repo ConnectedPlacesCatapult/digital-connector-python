@@ -241,7 +241,7 @@ class RunPy4jServer(threading.Thread):
         if not server_started:
             jars_for_classpath = self.class_path_files()
             args = ['java', '-cp', 
-            home_dir + self._tombolo_path + 'lib/py4j0.10.6.jar:' + home_dir + self._tombolo_path +  'build/classes/java/main:' + 
+            home_dir + self._tombolo_path +  'build/classes/java/main:' + 
             ':'.join(jars_for_classpath), 'uk.org.tombolo.Py4jServer']
             p = sp.Popen(args, cwd=home_dir + self._tombolo_path)
         server_started = True
