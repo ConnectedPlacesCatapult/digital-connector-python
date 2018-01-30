@@ -140,16 +140,10 @@ class AbstractImporter(object):
         gateway = JavaGateway()
         return gateway
 
-    def gateway_obj_with_callback(self, python_entry):
-        gateway = JavaGateway(callback_server_parameters=CallbackServerParameters(), 
-                                    python_server_entry_point=python_entry)
-        return gateway
-
-    def download_data(self, url, data_cache_directory='/tmp', prefix='', suffix=''):
-        global gateway
-        _gateway = self.gateway_obj_with_callback(python_entry=self)
-        data = _gateway.entry_point.downloadData(url, data_cache_directory, prefix, suffix)
-        _gateway.close()
+    # def gateway_obj_with_callback(self, python_entry):
+    #     gateway = JavaGateway(callback_server_parameters=CallbackServerParameters(), 
+    #                                 python_server_entry_point=python_entry)
+    #     return gateway
     
     def save_provider(self, provider):
         global gateway
@@ -253,6 +247,8 @@ class RunPy4jServer(threading.Thread):
             for file_name in [f_names for f_names in file_names if f_names.endswith(".jar")]:
                 dirs.append(os.path.join(directory_path, file_name))
         return dirs
+
+
 
 
 
