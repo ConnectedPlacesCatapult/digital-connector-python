@@ -49,12 +49,12 @@ class Recipe(object):
 
         gradle = gradle_path + '/bin/' if gradle_path is not None else ''
         gradle_command = gradle + 'gradle'
-        args = [gradle_command, "runExport", 
-                "-PdataExportSpec=" + self.recipe, "-PoutputFile=" + base_dir + '/' + output_path]
+        args = [gradle_command, "runExport", "-Ps",
+                "-Precipe=" + self.recipe, "-Poutput=" + base_dir + '/' + output_path]
         if force_imports is not None:
-            args.append("-PforceImports=" + force_imports)
+            args.append("-Pforce=" + force_imports)
         if clear_database_cache:
-            args.append("-PclearDatabaseCache=true")
+            args.append("-Pclear=true")
         output = sp.Popen(args, stdout=sp.PIPE, cwd=base_dir + '/' + tombolo_path)
 
         for log in iter(output.stdout.readline, b''):
