@@ -36,7 +36,7 @@ class Recipe(object):
         if console_print:
             print(self.recipe)
 
-    def run_recipe(self, tombolo_path, output_path, force_imports=None, clear_database_cache=False, gradle_path=None):
+    def run_recipe(self, tombolo_path, output_path, force_imports=None, clear_database_cache=False, gradle_path=None, console_print=True):
         """Runs the recipe directly from Python console
 
         Args: 
@@ -45,6 +45,7 @@ class Recipe(object):
             `force_imports`: (Optional) If you would like to import the datasource for the importer again.    
             `clear_database_cache`: (Optional) To clear the database.    
             `gradle_path`: (Optional) If gradle path is not set in env variables, use this option to pass gradle path.
+            `console_print`: (Optional) To print the output logs on Terminal
         """
 
         gradle = gradle_path + '/bin/' if gradle_path is not None else ''
@@ -56,10 +57,19 @@ class Recipe(object):
         if clear_database_cache:
             args.append("-Pclear=true")
         output = sp.Popen(args, stdout=sp.PIPE, cwd=base_dir + '/' + tombolo_path)
+        
+        if console_print:
+            for log in iter(output.stdout.readline, b''):
+                sys.stdout.write(str(log) + '\n')
+            output.stdout.close()
+        else:
+            wait_ = output.wait()
+            response_code = output.returncode
+            if response_code == 0:
+                print('Execution completed Successfully!!!!')
+            else:
+                print('Program quit with an error!!!')
 
-        for log in iter(output.stdout.readline, b''):
-            sys.stdout.write(str(log) + '\n')
-        output.stdout.close()
 
 class Dataset(object):
     """Creates a Dataset Object
