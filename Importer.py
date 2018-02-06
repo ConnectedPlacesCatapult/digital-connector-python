@@ -1,9 +1,18 @@
+# Helper class to build importers for Digital Connector using python
+# Dependencies:
+#   py4j: pip install py4j
+#   Digital Connector: clone it from https://github.com/FutureCitiesCatapult/TomboloDigitalConnector.git
+#   Setup Digital Connector by following instruction given on https://github.com/FutureCitiesCatapult/TomboloDigitalConnector
+# How it works:
+#   Py4j opens a tcp connection with jvm which allows the exchange of objects between python and java
+
 from recipe import is_of_type, is_list_object, all_same_type
 from py4j.java_gateway import JavaGateway, GatewayParameters, CallbackServerParameters
 from pathlib import Path
 import threading
 import subprocess as sp
 
+# Getting path of user home directory
 home_dir = str(Path.home())
 server_started = False
 gateway = None
