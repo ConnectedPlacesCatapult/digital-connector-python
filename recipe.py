@@ -2,6 +2,9 @@ import json
 from pathlib import Path
 import subprocess as sp
 import sys
+import os
+import platform
+import ntpath
 
 base_dir = str(Path.home())
 
@@ -31,7 +34,9 @@ class Recipe(object):
         """
         self.recipe = json.dumps(self, indent=2, default=lambda a: a.__dict__)
         if output_location is not None:
-            with open(base_dir + '/' + output_location, 'w') as recipe_file:
+            output_location = output_location.replace(os.sep, ntpath.sep)
+            to_save = os.path.join(base_dir, output_location)
+            with open(to_save, 'w') as recipe_file:
                 recipe_file.write(self.recipe)
         if console_print:
             print(self.recipe)
@@ -47,19 +52,34 @@ class Recipe(object):
             `gradle_path`: (Optional) If gradle path is not set in env variables, use this option to pass gradle path.
         """
 
-        gradle = gradle_path + '/bin/' if gradle_path is not None else ''
+        shell = False
+        if platform.system() == 'Windows':
+            self.recipe = self.recipe.replace('\n', '')
+            self.recipe = json.dumps(self.recipe)
+            tombolo_path = tombolo_path.replace(os.sep, ntpath.sep)
+            output_path = output_path.replace(os.sep, ntpath.sep)
+            if gradle_path is not None:
+                gradle_path = gradle_path.replace(os.sep, ntpath.sep)
+            shell = True
+
+        to_save = os.path.join(base_dir, output_path)
+        gradle = os.path.join(gradle_path, 'bin') if gradle_path is not None else ''
         gradle_command = gradle + 'gradle'
-        args = [gradle_command, "runExport", "-Ps",
-                "-Precipe=" + self.recipe, "-Poutput=" + base_dir + '/' + output_path]
+        args = [gradle_command, "runExport", "-Ps", 
+                "-Precipe=" + self.recipe, "-Poutput=" + to_save]
         if force_imports is not None:
             args.append("-Pforce=" + force_imports)
         if clear_database_cache:
             args.append("-Pclear=true")
-        output = sp.Popen(args, stdout=sp.PIPE, cwd=base_dir + '/' + tombolo_path)
+        output = sp.Popen(args, stdout=sp.PIPE, cwd=os.path.join(base_dir, tombolo_path), shell=shell)
 
         for log in iter(output.stdout.readline, b''):
             sys.stdout.write(str(log) + '\n')
         output.stdout.close()
+
+        if platform.system() == 'Windows':
+            sys.exit(1)
+
 
 class Dataset(object):
     """Creates a Dataset Object
