@@ -3,6 +3,9 @@ from py4j.java_gateway import JavaGateway, GatewayParameters, CallbackServerPara
 from pathlib import Path
 import threading
 import subprocess as sp
+import platform
+import os
+import ntpath
 
 home_dir = str(Path.home())
 server_started = False
@@ -110,6 +113,8 @@ class AbstractImporter(object):
     def __init__(self, tombolo_path, print_data=False):
         global gateway
         self._tombolo_path = tombolo_path
+        if platform.system() == 'Windows':
+            self._tombolo_path = self._tombolo_path.replace(os.sep, ntpath.sep)
         self._print_data = print_data
         self._data = None
         self.start_server()
@@ -229,16 +234,18 @@ class RunPy4jServer(threading.Thread):
         global server_started
         if not server_started:
             jars_for_classpath = self.class_path_files()
-            args = ['java', '-cp', 
-            home_dir + self._tombolo_path +  'build/classes/java/main:' + 
-            ':'.join(jars_for_classpath), 'uk.org.tombolo.Py4jServer']
-            p = sp.Popen(args, cwd=home_dir + self._tombolo_path)
+            build_path = os.path.join('build', 'classes', 'java', 'main')
+            class_path = os.path.join(home_dir, self._tombolo_path, build_path)
+            args = ['java', '-cp', class_path + ':' + ':'.join(jars_for_classpath), 
+                    'uk.org.tombolo.Py4jServer']
+            p = sp.Popen(args, cwd=os.path.join(home_dir, self._tombolo_path))
         server_started = True
     
     def class_path_files(self):
         import os, os.path
         dirs = []
-        for directory_path, _, file_names in os.walk(home_dir + "/.gradle/caches/modules-2/files-2.1"):
+        to_walk = os.path.join(home_dir, '.gradle', 'caches', 'modules-2', 'files-2.1')
+        for directory_path, _, file_names in os.walk(to_walk):
             for file_name in [f_names for f_names in file_names if f_names.endswith(".jar")]:
                 dirs.append(os.path.join(directory_path, file_name))
         return dirs
