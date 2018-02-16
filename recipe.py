@@ -78,7 +78,7 @@ class Recipe(object):
         output.stdout.close()
 
         if platform.system() == 'Windows':
-            sys.exit(1)
+            sys.exit(0)
 
 
 class Dataset(object):
