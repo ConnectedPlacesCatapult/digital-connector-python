@@ -41,7 +41,7 @@ class Recipe(object):
         if console_print:
             print(self.recipe)
 
-    def run_recipe(self, tombolo_path, output_path, force_imports=None, clear_database_cache=False, gradle_path=None):
+    def run_recipe(self, tombolo_path, output_path, force_imports=None, clear_database_cache=False, gradle_path=None, console_print=True):
         """Runs the recipe directly from Python console
 
         Args: 
@@ -50,6 +50,7 @@ class Recipe(object):
             `force_imports`: (Optional) If you would like to import the datasource for the importer again.    
             `clear_database_cache`: (Optional) To clear the database.    
             `gradle_path`: (Optional) If gradle path is not set in env variables, use this option to pass gradle path.
+            `console_print`: (Optional) To print the output logs on Terminal
         """
 
         shell = False
@@ -74,12 +75,17 @@ class Recipe(object):
             args.append("-Pclear=true")
         output = sp.Popen(args, stdout=sp.PIPE, cwd=os.path.join(base_dir, tombolo_path), shell=shell)
 
-        for log in iter(output.stdout.readline, b''):
-            sys.stdout.write(str(log) + '\n')
+        if console_print:
+            for log in iter(output.stdout.readline, b''):
+                sys.stdout.write(str(log) + '\n')
+
         output.communicate()[0]
         if output.returncode != 0:
             if platform.system() == 'Windows':
                 sys.exit(1)
+            print('Program quit with an error!!!')
+        else:
+            print('Execution completed Successfully!!!!')
         output.stdout.close()
 
 
