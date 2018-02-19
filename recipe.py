@@ -63,22 +63,24 @@ class Recipe(object):
             shell = True
 
         to_save = os.path.join(base_dir, output_path)
-        gradle = os.path.join(gradle_path, 'bin') if gradle_path is not None else ''
-        gradle_command = gradle + 'gradle'
+        gradle = gradle_path if gradle_path is not None else ''
+        gradle_command = os.path.join(gradle, 'gradle')
         args = [gradle_command, "runExport", "-Ps", 
                 "-Precipe=" + self.recipe, "-Poutput=" + to_save]
         if force_imports is not None:
-            args.append("-Pforce=" + force_imports)
+            is_of_type(Datasource, force_imports, 'The parameter expects Datasource Object')
+            args.append("-Pforce=" + force_imports.importerClass)
         if clear_database_cache:
             args.append("-Pclear=true")
         output = sp.Popen(args, stdout=sp.PIPE, cwd=os.path.join(base_dir, tombolo_path), shell=shell)
 
         for log in iter(output.stdout.readline, b''):
             sys.stdout.write(str(log) + '\n')
+        output.communicate()[0]
+        if output.returncode != 0:
+            if platform.system() == 'Windows':
+                sys.exit(1)
         output.stdout.close()
-
-        if platform.system() == 'Windows':
-            sys.exit(0)
 
 
 class Dataset(object):
