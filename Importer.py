@@ -1,14 +1,37 @@
+# Helper class to build importers for Digital Connector using python
+# Dependencies:
+#   py4j: pip install py4j
+#   Digital Connector: clone it from https://github.com/FutureCitiesCatapult/TomboloDigitalConnector.git
+#   Setup Digital Connector by following instruction given on https://github.com/FutureCitiesCatapult/TomboloDigitalConnector
+# How it works:
+#   Py4j opens a tcp connection with jvm which allows the exchange of objects between python and java
+# Note: Please make sure you compile DigitalConnector before using this Python Script
+
 from recipe import is_of_type, is_list_object, all_same_type
 from py4j.java_gateway import JavaGateway, GatewayParameters, CallbackServerParameters
 from pathlib import Path
 import threading
 import subprocess as sp
 
+# Getting path of user home directory
 home_dir = str(Path.home())
 server_started = False
 gateway = None
 
 class Provider(object):
+    """Creates a Provider Object
+
+    Args:
+        `label`: A string label, which represents from where the data is coming,
+            e.g:
+                `uk.gov.dft` in case Department for Transport is providing the data
+        `name`: A more user friendly description of label.
+            e.g:
+                `Department for Transport` as name for label `uk.gov.dft`
+    
+    Methods:
+        `to_java_provider`: Coverts a python object to a Java object
+    """
     def __init__(self, label, name):
         self._label = label
         self._name = name
@@ -19,6 +42,21 @@ class Provider(object):
 
 
 class Attribute(object):
+    """Creates a Attribute Object
+
+    Args:
+        `provider`: A python provider object
+        `label`: A string from datasource that user of the importer can use to, 
+                a value, in conjunction with Subjects.
+            e.g:
+                `NO2 40 ug/m3 as an annual mean`, which user could provide in a 
+                recipe file in order to fetch values related for `NO2`, 
+                `40 ug/m3 as annual mean`
+        `description`: A more user friendly description for label
+    
+    Methods:
+        `to_java_attribute`: Coverts a python object to a Java object
+    """
     def __init__(self, provider, label, description):
         is_of_type(Provider, provider)
 
@@ -32,6 +70,16 @@ class Attribute(object):
                 self._label, self._description)
 
 class SubjectType(object):
+    """Creates a SubjectType Object
+
+    Args:
+        `label`: A String that could represent the type of all Subjects
+        `name`: A more user friendly description
+        `provider`: A python object of Provider type
+    
+    Methods:
+        `to_java_subject_type`: Coverts a python object to a Java object
+    """
     def __init__(self, provider, label, name):
         is_of_type(Provider, provider)
 
@@ -45,6 +93,22 @@ class SubjectType(object):
                 self._label, self._name)
 
 class Subject(object):
+    """Creates a Subject Object
+
+    Args:
+        `subject_type`: A python object of type SubjectType
+        `label`: Usually a code for geography, 
+            e.g:
+                for local authority Barnet, label = E09000003 
+        `name`: Usually an actual name of geography,
+            e.g:
+                for local authority label = E09000003, name would be `Barnet`
+        `shape`: Actual dimensions of the geography, it could be point, lines, 
+                polygons or multipolygons
+    
+    Methods:
+        `to_java_subject`: Coverts a python object to a Java object
+    """
     def __init__(self, subject_type, label, name, shape):
         is_of_type(SubjectType, subject_type)
 
@@ -59,6 +123,15 @@ class Subject(object):
             self._label, self._name, self._shape.to_java_geometry())
 
 class Geometry(object):
+    """Creates a Geometry Object
+
+    Args:
+        `latitude`: Latitude value as a String
+        `longitude`: Longitude value as a String
+    
+    Methods:
+        `to_java_geometry`: Coverts a python object to a Java object
+    """
     def __init__(self, latitude, longitude):
         self._latitute = latitude
         self._longitute = longitude
@@ -76,6 +149,17 @@ class Geometry(object):
         return geometry
 
 class TimedValue(object):
+    """Creates a TimedValue Object
+
+    Args:
+        `subject`: A python object of type Subject
+        `attribute`: A python object of type Attribute
+        `timestamp`: A timestamp at which the value was recorded
+        `value`: An acutal value for that subject and attribute
+    
+    Methods:
+        `to_java_timed_value`: Coverts a python object to a Java object
+    """
     def __init__(self, subject, attribute, timestamp, value):
         is_of_type(Subject, subject)
         is_of_type(Attribute, attribute)
@@ -92,6 +176,16 @@ class TimedValue(object):
             gateway.jvm.java.lang.Double.parseDouble(self._value))
 
 class FixedValue(object):
+    """Creates a FixedValue Object
+
+    Args:
+        `subject`: A python object of type Subject
+        `attribute`: A python object of type Attribute
+        `value`: An acutal value for that subject and attribute
+    
+    Methods:
+        `to_java_fixed_value`: Coverts a python object to a Java object
+    """
     def __init__(self, subject, attribute, value):
         is_of_type(Subject, subject)
         is_of_type(Attribute, attribute)
@@ -107,6 +201,12 @@ class FixedValue(object):
     
 
 class AbstractImporter(object):
+    """Creates AbstractImporter class object
+
+    Args:
+        `tombolo_path`: Path of the TomboloDigitalConnector Project
+        `print_data`: Print the dataset sent by DigitalConnector callback
+    """
     def __init__(self, tombolo_path, print_data=False):
         global gateway
         self._tombolo_path = tombolo_path
@@ -116,15 +216,31 @@ class AbstractImporter(object):
         gateway = self.gateway_obj()
 
     class Java:
+        """Py4j Server Callback
+
+            This class implements an interface declared in DigitalConnector, 
+            to initiate communication from Java to Python
+        """
         implements = ["uk.org.tombolo.Py4jServerInterface"]
 
     def streamData(self, data):
+        """Callback Method
+
+            This method is the implementation of the method declared in 
+            Py4jServerInterface, in order to enable communication from Java to Python
+        """
         self._data = data
         if self._print_data:
             print(data)
         return self._data
 
     def start_server(self):
+        """Starts the Py4j Server
+
+        Creates an object for RunPy4jServer class and starts the server on a different thread.
+        If the server is already running, it doesn't spin off a new connection, instead uses the 
+        old one
+        """
         global server_started
         if not server_started:
             run_server = RunPy4jServer(tombolo_path=self._tombolo_path)
@@ -137,15 +253,35 @@ class AbstractImporter(object):
             print('Server is already running')
 
     def gateway_obj(self):
+        """Py4j Gateway object
+        
+        Return JavaGateway object
+        """
         gateway = JavaGateway()
         return gateway
     
     def save_provider(self, provider):
+        """Saves Provider object
+
+        Args:
+            `provider`: Takes python provider class object as a parameter
+
+        Converts the Python Provider class object to Java object
+        Passes it to saveProvider method of PythonImporter in DigitalConnector.
+        """
         global gateway
         is_of_type(Provider, provider)
         gateway.entry_point.saveProvider(provider.to_java_provider())
 
     def save_attribute(self, attributes):
+        """Saves Attribute object
+
+        Args:
+            `attributes`: Takes list of python Attribute class object as a parameter
+
+        Converts the Python list of Attribute class object to Java object
+        Passes it to saveAttributes method of PythonImporter in DigitalConnector.
+        """
         global gateway
         is_list_object(attributes)
         all_same_type(Attribute, attributes)
@@ -156,6 +292,14 @@ class AbstractImporter(object):
         gateway.entry_point.saveAttributes(attr_list)
 
     def save_timed_values(self, timed_values):
+        """Saves TimedValue object
+
+        Args:
+            `timed_values`: Takes python list of TimedValue class object as a parameter
+
+        Converts the Python list of TimedValue class objects to Java object
+        Passes it to saveAndClearTimedValueBuffer method of PythonImporter in DigitalConnector.
+        """
         global gateway
         is_list_object(timed_values)
         all_same_type(TimedValue, timed_values)
@@ -167,6 +311,14 @@ class AbstractImporter(object):
 
 
     def save_fixed_values(self, fixed_values):
+        """Saves FixedValue object
+
+        Args:
+            `fixed_values`: Takes python list of FixedValue class object as a parameter
+
+        Converts the Python list of FixedValue class objects to Java object
+        Passes it to saveAndClearFixedValueBuffer method of PythonImporter in DigitalConnector.
+        """
         global gateway
         is_list_object(fixed_values)
         all_same_type(FixedValue, fixed_values)
@@ -177,6 +329,14 @@ class AbstractImporter(object):
         gateway.entry_point.saveAndClearFixedValueBuffer(fixed_list)
 
     def save_subject_types(self, subject_types):
+        """Saves SubjectTypes object
+
+        Args:
+            `subject_types`: Takes python list of SubjectType class object as a parameter
+
+        Converts the Python list of SubjectType class objects to Java object
+        Passes it to saveSubjectTypes method of PythonImporter in DigitalConnector.
+        """
         global gateway
         is_list_object(subject_types)
         all_same_type(SubjectType, subject_types)
@@ -187,6 +347,14 @@ class AbstractImporter(object):
         gateway.entry_point.saveSubjectTypes(sub_type_list)
 
     def save_subjects(self, subjects):
+        """Saves Subjects object
+
+        Args:
+            `subjects`: Takes python list of Subject class object as a parameter
+
+        Converts the Python list of Subject class objects to Java object
+        Passes it to saveAndClearSubjectBuffer method of PythonImporter in DigitalConnector.
+        """
         global gateway
         is_list_object(subjects)
         all_same_type(Subject, subjects)
@@ -198,6 +366,24 @@ class AbstractImporter(object):
 
 
     def save(self, provider=None, attributes=None, subject_types=None, subjects=None, fixed_values=None, timed_values=None):
+        """Save to Database
+
+        Args:
+            `provider`: (Optional) Takes object of Python Provider class
+            `attributes`: (Optional) Takes a list of Python Attribute class object
+            `subject_types`: (Optional) Takes a list of Python SubjectType class object
+            `subjects`: (Optional) Takes a list of Python Subject class object
+            `fixed_values`: (Optional) Takes a list of Python FixedValue class object
+            `timed_values`: (Optional) Takes a list of Python TimedValue class object
+
+        Save the objects in Hierarchy
+        e.g:
+            If a list of TimedValue or FixedValue object is passed, then there is no need to 
+            pass provider, attributes, subject_types, subjects as list of TimedValue and FixedValue 
+            contains those objects and would save those in hierarchy. Thus no need to call save 
+            multiple times.
+            Please check the implementation of Importers in Importers folder of this repo.
+        """
         global gateway
         self.start_server()
 
@@ -221,6 +407,15 @@ class AbstractImporter(object):
 
 
 class RunPy4jServer(threading.Thread):
+    """Start Py4j Server
+
+    Args:
+        `tombolo_path`: Takes path of DigitalConnector as a String
+
+    Adds all the jars to the classpath and al the class files.
+    Starts the server on a different thread by calling the Py4jServer 
+    class of DigitalConnector.
+    """
     def __init__(self, tombolo_path):
         threading.Thread.__init__(self)
         self._tombolo_path = tombolo_path
