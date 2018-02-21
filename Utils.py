@@ -14,10 +14,14 @@ class Utils(object):
     def download_data(self, data_url, suffix, data_cache_directory='/tmp'):
         if platform.system() == 'Windows':
             data_url = data_url.replace(os.sep, ntpath.sep)
-        if Path(data_url).is_file():
-            print('Reading from Local Data Store', data_url)
-            with open(data_url, 'r') as data:
-                return data.read()
+        
+        try:
+            if Path(data_url).is_file():
+                print('Reading from Local Data Store', data_url)
+                with open(data_url, 'r') as data:
+                    return data.read()
+        except OSError:
+            print('Not a system path, downloading data...')
         
         _data = None
         encode_url = hashlib.md5(data_url.encode())
