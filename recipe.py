@@ -108,6 +108,12 @@ class Dataset(object):
         self.datasources = datasources
         self.fields = fields
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class AttributeMatcher(object):
     """Creates a AttributeMatcher Object
 
@@ -123,6 +129,12 @@ class AttributeMatcher(object):
         is_list_object(values, 'values should be of type list')
         if values:
             self.values = values
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
 
 class Datasource(object):
     """Creates a Datasource Object
@@ -147,6 +159,12 @@ class Datasource(object):
         if local_data:
             self.localData = local_data
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class Subject(object):
     """Creates a Subject Object
 
@@ -168,6 +186,12 @@ class Subject(object):
             is_of_type(Geo_Match_Rule, geo_match_rule, 'geo_match_rule must be of type Geo_Match_Rule')
             self.geoMatchRule = geo_match_rule
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class Geo_Match_Rule(object):
     """Creates a Geo_Match_Rule Object
 
@@ -182,6 +206,12 @@ class Geo_Match_Rule(object):
         all_same_type(Subject, subjects, 'subjects should be a list of subjects')
         self.subjects = subjects
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class Match_Rule(object):
     """Creates a Match_Rule Object
 
@@ -193,6 +223,12 @@ class Match_Rule(object):
     def __init__(self, attribute_to_match_on, pattern):
         self.attribute = attribute_to_match_on
         self.pattern = pattern
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
 
 
 class Field(object):
@@ -226,6 +262,12 @@ class AreaField(Field):
         super().__init__(field_class=package_name_transformation + 'AreaField', label=label)
         self.targetCRSCode = target_crs_code
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class ArithmeticField(Field):
     """Creates a ArithmeticField Object
 
@@ -246,6 +288,12 @@ class ArithmeticField(Field):
         self.field1 = operation_on_field_1
         self.field2 = operation_on_field_2
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class DescriptiveStatisticsField(Field):
     """Creates a DescriptiveStatisticsField Object
 
@@ -262,6 +310,12 @@ class DescriptiveStatisticsField(Field):
         super().__init__(field_class=package_name_transformation + 'DescriptiveStatisticsField', label=label)
         self.statistic = statistic
         self.fields = fields
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
 
 class FieldValueSumField(Field):
     """Creates a FieldValueSumField Object
@@ -280,6 +334,12 @@ class FieldValueSumField(Field):
         self.name = name
         self.fields = fields
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class FractionOfTotalField(Field):
     """Creates a FractionOfTotalField Object
 
@@ -297,6 +357,12 @@ class FractionOfTotalField(Field):
         super().__init__(field_class=package_name_transformation + 'FractionOfTotalField', label=label)
         self.dividendAttributes = dividend_attributes
         self.divisorAttribute = divisor_attribute
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
 
 class LinearCombinationField(Field):
     """Creates a LinearCombinationField Object
@@ -318,6 +384,12 @@ class LinearCombinationField(Field):
         self.scalars = scalars
         self.fields = fields
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class ListArithmeticField(Field):
     """Creates a ListArithmeticField Object
 
@@ -334,6 +406,12 @@ class ListArithmeticField(Field):
         super().__init__(field_class=package_name_transformation + 'ListArithmeticField', label=label)
         self.operation = operation
         self.fields = fields
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
 
 class PercentilesField(Field):
     """Creates a PercentilesField Object
@@ -361,6 +439,12 @@ class PercentilesField(Field):
             all_same_type(Subject, normalization_subjects, 'subjects should be of type Subject')
             self.normalizationSubjects = normalization_subjects
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 
 """
 below are the field classes from value package
@@ -381,6 +465,12 @@ class BasicValueField(Field):
             is_of_type(AttributeMatcher, attribute_matcher, 'attribute_matcher should be of type AttributeMatcher')
             self.attribute = attribute_matcher
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class FixedAnnotationField(Field):
     """Creates a FixedAnnotationField Object
 
@@ -392,6 +482,12 @@ class FixedAnnotationField(Field):
     def __init__(self, value, label=None):
         super().__init__(field_class=package_name_value + 'FixedAnnotationField', label=label)
         self.value = value
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
 
 class FixedValueField(BasicValueField):
     """Creates a FixedValueField Object
@@ -405,6 +501,12 @@ class FixedValueField(BasicValueField):
         super().__init__(attribute_matcher=attribute_matcher, field_class=package_name_value + 'FixedValueField', 
                         label=label)
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class LatestValueField(BasicValueField):
     """Creates a LatestValueField Object
 
@@ -417,6 +519,12 @@ class LatestValueField(BasicValueField):
         super().__init__(attribute_matcher=attribute_matcher, field_class=package_name_value + 'LatestValueField', 
                         label=label)
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class SubjectLatitudeField(Field):
     """Creates a SubjectLatitudeField Object
 
@@ -426,6 +534,12 @@ class SubjectLatitudeField(Field):
 
     def __init__(self, label=None):
         super().__init__(field_class=package_name_value + 'SubjectLatitudeField', label=label)
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
 
 class SubjectLongitudeField(Field):
     """Creates a SubjectLongitudeField Object
@@ -437,6 +551,12 @@ class SubjectLongitudeField(Field):
     def __init__(self, label=None):
         super().__init__(field_class=package_name_value + 'SubjectLongitudeField', label=label)
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class SubjectNameField(Field):
     """Creates a SubjectNameField Object
 
@@ -446,6 +566,12 @@ class SubjectNameField(Field):
 
     def __init__(self, label=None):
         super().__init__(field_class=package_name_value + 'SubjectNameField', label=label)
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
 
 class TimeseriesField(BasicValueField):
     """Creates a TimeseriesField Object
@@ -458,6 +584,12 @@ class TimeseriesField(BasicValueField):
     def __init__(self, label=None, attribute_matcher=None):
         super().__init__(field_class=package_name_value + 'TimeseriesField', label=label, 
                         attribute_matcher=attribute_matcher)
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
 
 
 """
@@ -479,6 +611,12 @@ class BackOffField(Field):
         super().__init__(field_class=package_name_aggregation + 'BackOffField', label=label)
         self.fields = fields
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class GeographicAggregationField(Field):
     """Creates a GeographicAggregationField Object
 
@@ -498,6 +636,12 @@ class GeographicAggregationField(Field):
         self.function = function
         self.field = field
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class MapToContainingSubjectField(Field):
     """Creates a MapToContainingSubjectField Object
 
@@ -514,6 +658,12 @@ class MapToContainingSubjectField(Field):
         super().__init__(field_class=package_name_aggregation + 'MapToContainingSubjectField', label=label)
         self.subject = subject
         self.field = field
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
 
 class MapToNearestSubjectField(Field):
     """Creates a MapToNearestSubjectField Object
@@ -534,6 +684,12 @@ class MapToNearestSubjectField(Field):
         self.maxRadius = max_radius
         self.subject = subject
         self.field = field
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
 
 """
 below are the field classes from assertion package
@@ -561,6 +717,12 @@ class AttributeMatcherField(Field):
             is_of_type(Field, field, 'field should be of type Field')
             self.field = field
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class OSMBuiltInAttributeMatcherField(AttributeMatcherField):
     """Creates a OSMBuiltInAttributeMatcherField Object
 
@@ -573,6 +735,12 @@ class OSMBuiltInAttributeMatcherField(AttributeMatcherField):
     def __init__(self, attributes=None, field=None, label=None):
         super().__init__(attributes=attributes, field=field, label=label, 
                         field_class='OSMBuiltInAttributeMatcherField')
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
 
 """
 below are the field classes from modelling package
@@ -596,6 +764,12 @@ class BasicModellingField(Field):
             all_same_type(Datasource, datasources, 'datasources should be of type Datasource')
             self.datasources = datasources
 
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class SingleValueModellingField(BasicModellingField):
     """Creates a SingleValueModellingField Object
 
@@ -608,6 +782,12 @@ class SingleValueModellingField(BasicModellingField):
     def __init__(self, recipe, datasources=None, label=None):
         super().__init__(recipe=recipe, datasources=datasources, label=label, 
                         field_class='SingleValueModellingField')
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
 
 
 """
@@ -653,4 +833,14 @@ def is_of_type(class_name, value, error_msg='should be of different type'):
 
     if not isinstance(value, class_name):
         raise TypeError(error_msg)
+
+
+def print_(object_):
+    """Converts the passed object in json hirerachy 
+
+    Args:
+        `object_`: Object of the class that needs to be converted
+
+    """
+    return json.dumps(object_, indent=2, default=lambda a: a.__dict__)
 
