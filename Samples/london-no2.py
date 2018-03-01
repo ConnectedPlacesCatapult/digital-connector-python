@@ -15,6 +15,5 @@ attribute_matcher = AttributeMatcher(provider='erg.kcl.ac.uk', label='NO2 40 ug/
 lvf = LatestValueField(attribute_matcher=attribute_matcher, label='Anual NO2')
 
 dataset = Dataset(subjects=[subjects], datasources=[datasources], fields=[lvf])
-recipe = Recipe(dataset=dataset)
-recipe.build_recipe(output_location=recipe_output_location)
-recipe.run_recipe(tombolo_path=tombolo_path, output_path=model_output)
+dataset.build_and_run(tombolo_path=tombolo_path, model_output_location=model_output, 
+                        recipe_console_print=True)

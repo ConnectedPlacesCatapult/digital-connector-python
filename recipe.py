@@ -107,12 +107,47 @@ class Dataset(object):
         self.subjects = subjects
         self.datasources = datasources
         self.fields = fields
-
+        
     def __repr__(self):
         return print_(self)
 
     def __str__(self):
         return print_(self)
+
+
+    def build_recipe(self, recipe_output_location=None, console_print=False):
+        """Builds the recipe from the class object
+
+        Args: 
+            `recipe_output_location`: (Optional) If you would like to save the recipe file, pass the location.    
+            `console_print`: (Optional) To print the recipe on console.    
+        """
+
+        recipe = Recipe(self)
+        recipe.build_recipe(output_location=recipe_output_location, console_print=console_print)
+
+    def build_and_run(self, tombolo_path, model_output_location, force_imports=None, 
+                      clear_database_cache=False, gradle_path=None, model_output_console_print=True,
+                      recipe_output_location=None, recipe_console_print=False):
+        """Runs the recipe directly from Python console
+
+        Args: 
+            `tombolo_path`: Path of the tombolo project.  
+            `model_output_location`: Path of the file where you want the output to be saved.  
+            `force_imports`: (Optional) If you would like to import the datasource for the importer again.    
+            `clear_database_cache`: (Optional) To clear the database.    
+            `gradle_path`: (Optional) If gradle path is not set in env variables, use this option to pass gradle path.
+            `recipe_output_location`: (Optional) If you would like to save the recipe file, pass the location.
+            `recipe_console_print`: (Optional) To print the output logs on Terminal
+            `model_output_console_print`: (Optional) To print the output logs on Terminal
+        """
+
+        recipe = Recipe(self)
+        recipe.build_recipe(output_location=recipe_output_location, console_print=recipe_console_print)
+        recipe.run_recipe(tombolo_path=tombolo_path, output_path=model_output_location, force_imports=force_imports,
+                          clear_database_cache=clear_database_cache, gradle_path=gradle_path, 
+                          console_print=model_output_console_print)
+
 
 class AttributeMatcher(object):
     """Creates a AttributeMatcher Object
