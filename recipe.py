@@ -560,6 +560,24 @@ class LatestValueField(BasicValueField):
     def __str__(self):
         return print_(self)
 
+class ConstantField(Field):
+    """Creates a ConstantField Object
+
+    Args: 
+        `label`: (Optional) accepts a String value.   
+        `value`: (Optional) accepts a String value.     
+    """
+
+    def __init__(self, value=None, label=None):
+        super().__init__(field_class=package_name_value + 'ConstantField', label=label)
+        self.value = value
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 class SubjectLatitudeField(Field):
     """Creates a SubjectLatitudeField Object
 
