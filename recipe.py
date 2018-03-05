@@ -506,8 +506,8 @@ class BasicValueField(Field):
     def __str__(self):
         return print_(self)
 
-class FixedAnnotationField(Field):
-    """Creates a FixedAnnotationField Object
+class ConstantField(Field):
+    """Creates a ConstantField Object
 
     Args: 
         `value`: accepts String value.   
@@ -515,7 +515,7 @@ class FixedAnnotationField(Field):
     """
 
     def __init__(self, value, label=None):
-        super().__init__(field_class=package_name_value + 'FixedAnnotationField', label=label)
+        super().__init__(field_class=package_name_value + 'ConstantField', label=label)
         self.value = value
 
     def __repr__(self):
