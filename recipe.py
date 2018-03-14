@@ -626,6 +626,24 @@ class TimeseriesField(BasicValueField):
     def __str__(self):
         return print_(self)
 
+class TimeseriesMeanValueField(BasicValueField):
+    """Creates a TimeseriesMeanValueField Object
+
+    Args: 
+        `attribute_matcher`: (Optional) accepts an object of AttributeMatcher type.   
+        `label`: (Optional) accepts a String value.     
+    """
+
+    def __init__(self, label=None, attribute_matcher=None):
+        super().__init__(field_class=package_name_value + 'TimeseriesMeanValueField', label=label, 
+                        attribute_matcher=attribute_matcher)
+
+    def __repr__(self):
+        return print_(self)
+
+    def __str__(self):
+        return print_(self)
+
 
 """
 below are the field classes from aggregation package
