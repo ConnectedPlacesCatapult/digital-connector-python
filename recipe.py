@@ -468,11 +468,11 @@ class PercentilesField(Field):
         super().__init__(field_class=package_name_transformation + 'PercentilesField', label=label)
         self.percentileCount = percentile_count
         self.inverse = inverse
-        self.valueField = field
+        self.field = field
         if normalization_subjects is not None:
             is_list_object(normalization_subjects)
             all_same_type(Subject, normalization_subjects, 'subjects should be of type Subject')
-            self.normalizationSubjects = normalization_subjects
+            self.subjects = normalization_subjects
 
     def __repr__(self):
         return print_(self)
