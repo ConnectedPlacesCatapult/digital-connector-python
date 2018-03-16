@@ -1,6 +1,6 @@
 '''
-This recipe will get you started with using Digital Connector, 
-it uses the minimal objects required to built a useful recipe.
+This recipe will get you started with Digital Connector, 
+it uses the minimal objects required to build a useful recipe.
 
 The recipe aims at giving the latest value of No2 40 ug/m3 annual mean 
 for every LocalAuthority
@@ -22,8 +22,8 @@ model_output = 'Desktop/london-no2.geojson'
 # importing the required classes for building the recipe
 from recipe import Recipe, Field, Datasource, AttributeMatcher, Subject, Match_Rule, LatestValueField, Dataset
 
-# Creating Subject and Datasources to tell DC which importer needs to be called 
-# inorder to dowload datasets for more info please refer to documentation
+# Creating Subject and Datasources to tell DC which importer need to be called 
+# in order to dowload datasets. For more info please refer to documentation
 subjects = Subject(subject_type_label='airQualityControl', provider_label='erg.kcl.ac.uk')
 datasources = Datasource(importer_class='uk.org.tombolo.importer.lac.LAQNImporter', datasource_id='airQualityControl')
 
