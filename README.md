@@ -15,4 +15,4 @@ We would build more detailed tutorials in the near future as the repository is u
 ## City Data Hackathon
 - You can find example recipes for the 3 hackathon challenges in Samples Folder
 
-### Note: this repository is still under development, there maybe bugs.
+### Note: this repository is still under development, there may be bugs.
