@@ -1,18 +1,82 @@
 # Python Support for Digital Connector
 
-A python script to work with digital connector through python. 
+A library to build recipes and importers for Digital Connector using Python.
+
+## Table of Contents:
+
+- [Current Scope](#current-scope)
+- [Requirements](#requirements)
+- [Quick Start](#quick-start)
+- [Run Recipe](#run-recipe)
+- [Implementations](#implementations)
+- [License](#license) 
 
 ## Current Scope
-The library currently only supports building recipe(Windows, Mac and Linux) and importers(Mac and Linux) through python. Please look through Samples and Importers folder in order to see how it is done.   
+The library currently supports building recipe(Windows, Mac and Linux) and importers(Mac and Linux) through python. Please look through Samples and Importers folder in order to see how it is done.   
 We would build more detailed tutorials in the near future as the repository is under development.
 
 *Note: At the moment we don't provide support for contributions and pull requests.*
 
-## What to expect in near Future?
-- Detailed tutorials
-- Contribution Guide
+## Requirements
 
-## City Data Hackathon
-- You can find example recipes for the 3 hackathon challenges in Samples Folder
+- Python 3.x (for complete project)
+- py4j library (for building importers only)
 
-### Note: this repository is still under development, there may be bugs.
+## Quick Start
+
+This tutorial will guide you to a quick start on **macOS and Ubuntu**.
+
+#### A note about the Terminal
+
+The [Terminal](https://en.wikipedia.org/wiki/Terminal) application can be found in the Applications -> Utilities folder or quickly accessed through Spotlight. It is pre-installed in **macOS** so there is no need to install it.
+
+On **Debian** based systems press ```ctrl+alt+t``` to open Terminal
+
+You will need this application to run some of the commands of this tutorial. When you enter a command and press 
+return/enter, the terminal will execute it and complete the task.
+
+**Make sure to press return after typing a command before you enter the next one.**
+
+### Let's start
+
+- Open **Terminal**.
+- Clone the **digital-connector-python** repo to your local machine.
+
+```bash
+git clone https://github.com/FutureCitiesCatapult/digital-connector-python.git
+```
+
+## Run Recipe
+
+- Navigate to the digital-connector-python directory
+- To run the sample recipe in the Samples folder, e.g london-no2.py
+    - Navigate to Samples folder and open london-no2.py in the editor of your choice. e.g VS Code
+    - Change the value of the tombolo_path variable to the path of the installation of Digital Connector
+- To execute the recipe, type
+```bash
+python Samples/london-no2.py
+```
+
+**Note: To run the recipe, Digital Connector should be locally installed.**
+
+## Implementations
+
+- Engine of the [Digital Connector](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector) is built in Java and is required to run recipe's built in python.
+
+## How does it work?
+
+- Once the recipe is built and ```build_and_run``` is called the python bridge converts the python code into json string. 
+- The converted json string is then passed to Digital Connector, as Digital Connector only accepts json file or string as recipe.
+- The output of the Digital Connector is then passed to python bridge and displayed in Terminal.
+
+**Note: json string as recipe can only be passed via python script, if it is passed directly the program would produce an error**
+
+## Digital Connector
+
+- To know more about architecture of project, recipe and other components within recipe like Subject, Attribute etc, check out  [Digital Connector](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector)
+
+## License
+
+[MIT](LICENSE)
+
+When using the Tombolo or other GitHub logos and artwork, be sure to follow the [GitHub logo guidelines](https://github.com/logos).
