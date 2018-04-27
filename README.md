@@ -9,6 +9,8 @@ A library to build recipes and importers for Digital Connector using Python.
 - [Quick Start](#quick-start)
 - [Run Recipe](#run-recipe)
 - [Implementations](#implementations)
+- [How does it work?](#how-does-it-work?)
+- [Digital Connector](#digital-connector)
 - [License](#license) 
 
 ## Current Scope
