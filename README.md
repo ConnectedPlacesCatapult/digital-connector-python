@@ -9,7 +9,7 @@ A library to build recipes and importers for Digital Connector using Python.
 - [Quick Start](#quick-start)
 - [Run Recipe](#run-recipe)
 - [Implementations](#implementations)
-- [How does it work?](#how-does-it-work?)
+- [How does it work?](#how-does-it-work)
 - [Digital Connector](#digital-connector)
 - [License](#license) 
 
@@ -65,7 +65,7 @@ python Samples/london-no2.py
 
 - Engine of the [Digital Connector](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector) is built in Java and is required to run recipe's built in python.
 
-## How does it work?
+## How does it work
 
 - Once the recipe is built and ```build_and_run``` is called the python bridge converts the python code into json string. 
 - The converted json string is then passed to Digital Connector, as Digital Connector only accepts json file or string as recipe.
