@@ -6,6 +6,7 @@ A library to build recipes and importers for Digital Connector using Python.
 
 - [Current Scope](#current-scope)
 - [Requirements](#requirements)
+- [Installing Virtual Environments](#installing-virtual-environments)
 - [Quick Start](#quick-start)
 - [Run Recipe](#run-recipe)
 - [Implementations](#implementations)
@@ -23,6 +24,10 @@ We would build more detailed tutorials in the near future as the repository is u
 
 - Python 3.x (for complete project)
 - py4j library (for building importers only)
+
+## Installing Virtual Environments
+- For Windows - [Anaconda](https://conda.io/docs/user-guide/install/index.html#regular-installation)
+- For macOS/Ubuntu - [virtualenv](https://virtualenv.pypa.io/en/stable/installation/)/[jupyter](http://jupyter.org/install) 
 
 ## Quick Start
 
