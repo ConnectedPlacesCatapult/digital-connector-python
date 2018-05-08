@@ -26,8 +26,8 @@ We would build more detailed tutorials in the near future as the repository is u
 - py4j library (for building importers only)
 
 ## Installing Virtual Environments
-- [Anaconda](https://conda.io/docs/user-guide/install/index.html#regular-installation)
-- [Jupyter Notebook](http://jupyter.org/install)
+- For Windows - [Anaconda](https://conda.io/docs/user-guide/install/index.html#regular-installation)
+- For macOS/Ubuntu - [virtualenv](https://virtualenv.pypa.io/en/stable/installation/)/[jupyter](http://jupyter.org/install) 
 
 ## Quick Start
 
