@@ -1,3 +1,10 @@
+'''
+This importer is replication of LAQNImporter of DigitalConnector.
+This importer is built as an example of how to build importers using 
+Importer.py.
+This importer has also been used in an example recipe london-no2-python-importer.py.
+'''
+
 from os import path, pardir
 import sys
 sys.path.append(path.join(path.dirname(path.realpath(__file__)), pardir))
