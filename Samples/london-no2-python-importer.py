@@ -1,3 +1,9 @@
+'''
+The recipe is same as london-no2.py, the only difference is that 
+instead of using uk.org.tombolo.importer.lac.LAQNImporter, it uses an 
+importer built in python and first executes it and then passes the recipe 
+to the Digital Connector.
+'''
 from os import path, pardir
 import sys
 sys.path.append(path.join(path.dirname(path.realpath(__file__)), pardir))
