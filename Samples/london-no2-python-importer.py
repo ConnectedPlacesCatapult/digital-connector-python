@@ -3,6 +3,10 @@ The recipe is same as london-no2.py, the only difference is that
 instead of using uk.org.tombolo.importer.lac.LAQNImporter, it uses an 
 importer built in python and first executes it and then passes the recipe 
 to the Digital Connector.
+
+To know more Digital Connector visit https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/documentation/README.md 
+and to know more about its entities like Subject, Attribute, Datasources, 
+please visit https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/documentation/recipe-language.md
 '''
 from os import path, pardir
 import sys

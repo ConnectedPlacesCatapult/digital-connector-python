@@ -4,13 +4,17 @@
      - London localAuthority data using OaImporter.java
   
   By using ArithmeticField and LatestValueField if perform two operations
-    - Sum of the mean of 'CarCountTaxis' - 1
-    - Sum of the mean of 'CountPedalCycles' - 2
+    - Sum of the mean of 'CarCountTaxis' - eq: 1
+    - Sum of the mean of 'CountPedalCycles' - eq: 2
   
   Then for each localAuthority using GeographicAggregationField
-    - It dividies 2/1 to get 'BicycleFraction' - 3
+    - It divides eq: 2 with eq: 1 to get 'BicycleFraction' - eq: 3
   
-  Then writes 3 to the output file for every localAuthority using GeographicAggregationField
+  It then writes eq: 3 (BicycleFraction) that are contained within a local aurhority using GeographicAggregationField
+
+  To know more Digital Connector visit https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/documentation/README.md 
+  and to know more about its entities like Subject, Attribute, Datasources, 
+  please visit https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/documentation/recipe-language.md
 '''
 
 from os import path, pardir

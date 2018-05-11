@@ -4,6 +4,10 @@ it uses the minimal objects required to build a useful recipe.
 
 The recipe aims at giving the latest value of No2 40 ug/m3 annual mean 
 for every LocalAuthority
+
+To know more Digital Connector visit https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/documentation/README.md 
+and to know more about its entities like Subject, Attribute, Datasources, 
+please visit https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/documentation/recipe-language.md
 '''
 
 from os import path, pardir

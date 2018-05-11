@@ -4,14 +4,19 @@
      - London localAuthority data using OaImporter.java
   
   Then for each localAuthority using GeographicAggregationField
-    - It sums all the bi-cycle count based on LocalAuthority
+    - It sums all the bicycle count based on LocalAuthority
   
-  Then it writes the sum to the output file for every localAuthority using GeographicAggregationField
+  It then sums the individual bicycle counts that are contained within a local aurhority using GeographicAggregationField
+
+  To know more Digital Connector visit https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/documentation/README.md 
+  and to know more about its entities like Subject, Attribute, Datasources, 
+  please visit https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/documentation/recipe-language.md
 '''
 from os import path, pardir
 import sys
 sys.path.append(path.join(path.dirname(path.realpath(__file__)), pardir))
 
+# Importing all the relevant objects which are necessary
 from recipe import Dataset, Subject, AttributeMatcher, GeographicAggregationField, LatestValueField, Match_Rule, Datasource, Recipe
 
 # Creating match rule for London
