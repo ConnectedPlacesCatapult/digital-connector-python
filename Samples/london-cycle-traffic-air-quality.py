@@ -8,13 +8,17 @@
     - LatestValue of 'NO2 40 ug/m3 as an annual mean' - 1
   
   By using ArithmeticField and LatestValueField if perform two operations
-    - Sum of the mean of 'CarCountTaxis' - 2
-    - Sum of the mean of 'CountPedalCycles' - 3
+    - Sum of the mean of 'CarCountTaxis' - eq: 2
+    - Sum of the mean of 'CountPedalCycles' - eq: 3
   
   Then for each localAuthority using GeographicAggregationField
-    - It dividies 2/3 to get 'BicycleFraction' - 4
+    - It divides eq: 2 with eq: 3 to get 'BicycleFraction' - eq: 4
   
-  Then writes 1 and 4 to the output file for every localAuthority using GeographicAggregationField
+  It then writes eq: 1 and eq: 4 that are contained within a local aurhority using GeographicAggregationField
+
+  To know more Digital Connector visit https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/documentation/README.md 
+  and to know more about its entities like Subject, Attribute, Datasources, 
+  please visit https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/documentation/recipe-language.md
 '''
 
 from os import path, pardir
