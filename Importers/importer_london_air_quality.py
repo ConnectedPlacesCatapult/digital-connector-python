@@ -21,7 +21,7 @@ from Utils import Utils
 data = Utils.download_data(data_url=data_url, suffix='json')
 
 from Importer import Provider, SubjectType, AbstractImporter, home_dir, Attribute, Subject, Geometry, FixedValue, TimedValue
-importer = AbstractImporter(tombolo_path='/Desktop/UptodateProject/TomboloDigitalConnector/')
+importer = AbstractImporter(tombolo_path='Desktop/UptodateProject/TomboloDigitalConnector/')
 
 # Creating Provider
 provider = Provider(label='erg.kcl.ac.uk', name='Environmental Research Group Kings College London')
